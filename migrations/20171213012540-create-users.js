@@ -26,6 +26,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       avatar: {
+        unique: true,
         type: Sequelize.STRING
       },
       following: {
