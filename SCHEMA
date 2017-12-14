@@ -1,1 +1,9 @@
+// first create a db in postgres (psql)
 CREATE DATABASE imgnation;
+// then build the models (not needed -- the models are already built)
+sequelize model:create --name users --attributes "email:string, password:string, firstName:string, lastName:string, avatar:string, following:array:integer, followers:array:integer"
+sequelize model:create --name posts --attributes "imgLink:string, description:string, tags:array:integer"
+sequelize model:create --name comments --attributes "body:string, postId:integer, userId:integer"
+sequelize model:create --name tags --attributes "body:string"
+// then adjust the migrations to have all the requirements (not needed -- migrations are already adjusted)
+// then run sequelize db:migrate
