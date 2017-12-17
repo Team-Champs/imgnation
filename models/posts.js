@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var posts = sequelize.define('posts', {
-    imgLink: DataTypes.STRING,
+    img_link: DataTypes.STRING,
     description: DataTypes.STRING,
     tags: DataTypes.ARRAY(DataTypes.INTEGER)
   }, {
