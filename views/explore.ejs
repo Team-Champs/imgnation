@@ -1,0 +1,39 @@
+<% include ./includes/header.ejs %>
+
+<%# <h3>explore</h3> %>
+
+<% for(var i = 0; i < blogposts.length; i++){ %>
+  <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12 blogpost'>
+    <div class='userinfo'>
+      <div class='pull-left personheader'>
+        <div class='profileimage'>
+          <img src='' onerror="this.src='../public/images/profile.png'">
+        </div>
+        <div class='username'>
+          // <%= blogposts[i].firstName %>
+          // <%= blogposts[i].lastName %>
+        </div>
+      </div>
+      <div class='pull-right changeicons'>
+        <i class="fa fa-trash-o" aria-hidden="true" onClick=''></i>
+        <i class="fa fa-pencil" aria-hidden="true" onClick=''></i>
+      </div>
+    </div>
+    <div class="image">
+      <img src='<%= blogposts[i].img_link %>'/>
+    </div>
+    <div class="description">
+      <%= blogposts[i].description %>
+    </div>
+    <p class="tags">
+      <%= blogposts[i].tags %>
+    </p>
+    <hr/>
+    // <div class='commentholder'>
+    //   <%= blogposts[i].body %>
+    // </div>
+    // <input type="text" class="form-control commentarea" maxlength="150" placeholder="Comment" />
+  </div>
+<% } %>
+
+<% include ./includes/footer.ejs %>

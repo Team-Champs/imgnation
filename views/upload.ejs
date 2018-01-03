@@ -1,0 +1,24 @@
+<% include ./includes/header.ejs %>
+
+<form action="/add-post" method="GET" id="UploadForm">
+  <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+    <div class="image" id="ImageDiv">
+      <img src=""/>
+    </div>
+    <label for="test" class="uploadbtn">
+      <div class="btn btn-primary-outline">Upload</div>
+      <input type="file" accept="image/*" onchange="readURL(this);" name="imgLink"/>
+    </label>
+  </div>
+  <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+    <label>Description</label>
+    <textarea type="text" class="form-control descriptionarea" name="description" maxlength="150"></textarea>
+    <br/>
+    <label>Tags</label>
+    <input type="text" class="form-control" name="tags"/>
+    <br/>
+    <button class='btn btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12' type="submit">Share</button>
+  </div>
+</form>
+
+<% include ./includes/footer.ejs %>

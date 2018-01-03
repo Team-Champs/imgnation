@@ -30,6 +30,146 @@ app.set('view engine', 'ejs');
 
 // ------------------------------------------------------------------------------------------
 
+var all_posts = [];
+function get_all_posts(){
+  return new Promise(function(resolve, reject){
+    query('select * from posts order by id desc', [], function(err, result) {
+    //query('select * from posts order by id desc; select * from comments where postId =(select Id from posts)',[], function(err, result) {
+      if(err){
+        reject(err);
+      }
+      // console.log(result.rows);
+      resolve(result.rows);
+    });
+  });
+}
+
+// function get_home_posts(){
+//   return new Promise(function(resolve, reject){
+//     query('select * from posts order by id desc', [], function(err, result) {
+//       if(err){
+//         reject(err);
+//       }
+//       // console.log(result.rows);
+//       resolve(result.rows);
+//     });
+//   });
+// }
+
+// function get_comments(){
+//   return new Promise(function(resolve, reject){
+//     query('select * from comments where postId = (select Id from posts)', [], function(err, result) {
+//       if(err){
+//         reject(err);
+//       }
+//       // console.log(result.rows);
+//       resolve(result.rows);
+//     });
+//   });
+// }
+
+// function edit(){
+//   return new Promise(function(resolve, reject){
+//     query('update posts set (img_link, description, tags) values ($1, $2, $3) where Id = ($4)', [req.query.imgLink, req.query.description, req.query.tags, req.query.id], function(err, result) {
+//       if(err){
+//         reject(err);
+//       }
+//       // console.log(result.rows);
+//       resolve(result.rows);
+//     });
+//   });
+// }
+// function delete(){
+//   return new Promise(function(resolve, reject){
+//     query('DELETE FROM comments WHERE postId = (select Id from posts)', function(err, result) {
+//       if(err){
+//         reject(err);
+//       }
+//       // console.log(result.rows);
+//       resolve(result.rows);
+//     });
+//     query('DELETE FROM posts (Id) values($1)', [req.query.Id],, function(err, result) {
+//       if(err){
+//         reject(err);
+//       }
+//       // console.log(result.rows);
+//       resolve(result.rows);
+//     });
+//   });
+// }
+
+app.get('/', function(req, res){
+  //get_home_posts().then(function(all_posts){
+    res.render('index',{
+      //blogposts: all_posts,
+      title:"Home"
+    });
+  //});
+});
+
+app.get('/upload', function(req, res){
+  res.render('upload',{
+    title:"Upload"
+  });
+});
+
+app.get('/add-post', function(req, res){
+
+  query('select body from tags where body=$1', [req.query.body] ,function(err, res){
+    var tagsarray=[];
+    if(res.length  > 0){
+      res.send({message:"exist"});
+      return tags[i].id;
+    }
+    else{
+      query('insert into tags (body) values($1)', [req.query.body], function(err, result){
+        if(err){
+          console.log(err);
+          // return done (client);
+          return;
+        }
+        console.log('tag inserted.');
+        return tags[i].id;
+      });
+    }
+    for (var i = 0; i < tags.length; i++){
+      console.log(tags[i].id, tags[i].body);
+      tagsarray.push({id: tags[i].id});
+    }
+  })
+
+  // query('insert into posts (img_link, description, tags) values ($1, $2, $3)', [req.query.imgLink, req.query.description, req.query.tags], function(err, result) {
+  //   if(err){
+  //     console.log(err);
+  //     // return done (client);
+  //     return;
+  //   }
+  //   console.log('Blog posted.');
+  // });
+  // return res.redirect('/');
+});
+
+
+app.get('/explore', function(req, res){
+  get_all_posts().then(function(all_posts){
+    res.render('explore',{
+      blogposts: all_posts,
+      title:"Explore"
+    });
+  });
+});
+
+app.get('/profile', function(req, res){
+  //get_all_posts().then(function(all_posts){
+    res.render('profile',{
+      //blogposts: all_posts,
+      title:"Profile"
+    });
+  //});
+});
+
+// ------------------------------------------------------------------------------------------
+
 app.get('*', function(req, res) {
     res.status(404).send('<h1>Page not found!</h1>');
 });
