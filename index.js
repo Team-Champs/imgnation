@@ -79,7 +79,7 @@ function get_all_posts(){
 //     });
 //   });
 // }
-// function delete(){
+// function delete_posts(){
 //   return new Promise(function(resolve, reject){
 //     query('DELETE FROM comments WHERE postId = (select Id from posts)', function(err, result) {
 //       if(err){
@@ -88,7 +88,7 @@ function get_all_posts(){
 //       // console.log(result.rows);
 //       resolve(result.rows);
 //     });
-//     query('DELETE FROM posts (Id) values($1)', [req.query.Id],, function(err, result) {
+//     query('DELETE FROM posts (Id) values($1)', [req.query.Id], function(err, result) {
 //       if(err){
 //         reject(err);
 //       }
@@ -157,6 +157,12 @@ app.get('/explore', function(req, res){
       title:"Explore"
     });
   });
+  // delete_posts().then(function(){
+  //   res.render('explore',{
+  //     blogposts: all_posts,
+  //     title:"Explore"
+  //   });
+  // });
 });
 
 app.get('/profile', function(req, res){

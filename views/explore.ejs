@@ -15,8 +15,8 @@
         </div>
       </div>
       <div class='pull-right changeicons'>
-        <i class="fa fa-trash-o" aria-hidden="true" onClick=''></i>
-        <i class="fa fa-pencil" aria-hidden="true" onClick=''></i>
+        <i class="fa fa-trash-o" aria-hidden="true" data-toggle="modal" data-target="#deleteModal"></i>
+        <i class="fa fa-pencil" aria-hidden="true" data-toggle="modal" data-target="#editModal"></i>
       </div>
     </div>
     <div class="image">
@@ -35,5 +35,8 @@
     // <input type="text" class="form-control commentarea" maxlength="150" placeholder="Comment" />
   </div>
 <% } %>
+
+<% include ./includes/edit.ejs %>
+<% include ./includes/delete.ejs %>
 
 <% include ./includes/footer.ejs %>
