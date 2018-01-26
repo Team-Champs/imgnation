@@ -68,27 +68,22 @@ function get_all_posts(){
 //   });
 // }
 
-// function edit(){
+var this_post = [];
+
+function edit(){
+  return new Promise(function(resolve, reject){
+    query('update posts set (img_link, description, tags) values ($1, $2, $3) where Id = ($4)', [req.query.imgLink, req.query.description, req.query.tags, req.query.id], function(err, result) {
+      if(err){
+        reject(err);
+      }
+      // console.log(result.rows);
+      resolve(result.rows);
+    });
+  });
+}
+// function delete(){
 //   return new Promise(function(resolve, reject){
-//     query('update posts set (img_link, description, tags) values ($1, $2, $3) where Id = ($4)', [req.query.imgLink, req.query.description, req.query.tags, req.query.id], function(err, result) {
-//       if(err){
-//         reject(err);
-//       }
-//       // console.log(result.rows);
-//       resolve(result.rows);
-//     });
-//   });
-// }
-// function delete_posts(){
-//   return new Promise(function(resolve, reject){
-//     query('DELETE FROM comments WHERE postId = (select Id from posts)', function(err, result) {
-//       if(err){
-//         reject(err);
-//       }
-//       // console.log(result.rows);
-//       resolve(result.rows);
-//     });
-//     query('DELETE FROM posts (Id) values($1)', [req.query.Id], function(err, result) {
+//     query('DELETE FROM posts WHERE Id = $1', [req.query.Id], function(err, result) {
 //       if(err){
 //         reject(err);
 //       }
@@ -101,7 +96,7 @@ function get_all_posts(){
 app.get('/', function(req, res){
   //get_home_posts().then(function(all_posts){
     res.render('index',{
-      //blogposts: all_posts,
+      blogposts: all_posts,
       title:"Home"
     });
   //});
@@ -114,7 +109,6 @@ app.get('/upload', function(req, res){
 });
 
 app.get('/add-post', function(req, res){
-
   query('select body from tags where body=$1', [req.query.body] ,function(err, res){
     var tagsarray=[];
     if(res.length  > 0){
@@ -157,7 +151,12 @@ app.get('/explore', function(req, res){
       title:"Explore"
     });
   });
-  // delete_posts().then(function(){
+  edit().then(function(){
+    res.render('explore',{
+      blogposts: this_post
+    });
+  });
+  // delete().then(function(){
   //   res.render('explore',{
   //     blogposts: all_posts,
   //     title:"Explore"

@@ -8,6 +8,15 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
+        posts.hasMany(models.comments);
+        posts.hasMany(models.tags);
+        posts.belongsTo(models.user, {
+          delete: "CASCADE",
+          foreignKey: {
+            allowNull: false
+          }
+        });
+
       }
     }
   });
