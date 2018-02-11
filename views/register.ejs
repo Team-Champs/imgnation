@@ -1,0 +1,23 @@
+<% include ./includes/notlogin.ejs %>
+
+<div class="loginspace">
+  <div>
+    <img class="logo" src="../../public/images/ImgNation.svg"/>
+    <br/>
+    <form method="post" action="/register" enctype="application/json">
+      <input class="form-control" type="email" placeholder='Email' name="email" />
+      <br/>
+      <input class="form-control" type="password" placeholder='Password' name="password"/>
+      <br/>
+      <input class="form-control" type="password" placeholder='Confirm Password' name="password2"/>
+      <br/>
+      <button class='btn btn-login'>
+        Register
+      </button>
+    </form>
+  </div>
+  <button class='btn btn-foot foot' onclick="location.href='/'">
+    Back to Login
+  </button>
+</div>
+<% include ./includes/footer.ejs %>

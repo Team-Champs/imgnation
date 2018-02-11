@@ -1,0 +1,6 @@
+0. passport working in the system
+
+1. add post
+  -pass tags value into the tags db
+  -push the tags array into the post db
+  -pass the posts into the post db
