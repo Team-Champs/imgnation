@@ -93,9 +93,9 @@ function ensureAuthenticated(req, res, next){
 
 passport.use(new LocalStrategy(
   function(email, password, done) {
-    // console.log(models);
+    console.log("am i hit");
    models.users.findOne(email, function(data,err){
-    // console.log('this is the returned data: '+data);
+    console.log('this is the returned data: '+data);
     var users = data[0];
    	if(!user){
 			//invalid username
