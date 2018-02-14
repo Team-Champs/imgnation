@@ -83,6 +83,7 @@ app.use(function (req, res, next) {
 });
 // ------------------------------------------------------------------------------------------
 function ensureAuthenticated(req, res, next){
+  console.log(req.isAuthenticated());
 	if(req.isAuthenticated()){
 		return next();
 	} else {
@@ -91,43 +92,56 @@ function ensureAuthenticated(req, res, next){
 	}
 }
 
-passport.use(new LocalStrategy(
-  function(email, password, done) {
-    console.log("am i hit");
-   models.users.findOne(email, function(data,err){
-    console.log('this is the returned data: '+data);
-    var users = data[0];
+//session storing infomation - required by passport
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    models.users.findById(id).then(function(user) {
+        done(null, user);
+    });
+});
+
+passport.use('local',new LocalStrategy(
+  {
+    usernameField: 'email',
+    passwordField: 'password'
+  },
+  function(username, password, done) {
+    // console.log(username, password);
+   models.users.findOne({
+     where:{
+       'email': username
+     }
+   })
+   .then(function(data,err){
+    console.log(data.dataValues);
+    var user = data.dataValues;
    	if(!user){
 			//invalid username
       console.log('invalid user');
    		return done(null, false, {message: 'Unknown User'});
    	}
-   	models.users.comparePassword(password, models.users.password, function(err, result){
+   	bcrypt.compare(password, user.password, function(err, result){
    		if (err)
         return err;
    		if(result){
 				//succesful login
         console.log('login succesful');
-   			return done(null, users);
+   			return done(null, user);
      		} else {
   				//invalid password
           console.log('invalid pass');
      			return done(null, false, {message: 'Invalid password'});
    		}
    	});
+   })
+   .catch(err => {
+      console.error(err);
+      done(err);
    });
 }));
-//session storing infomation - required by passport
-passport.serializeUser(function(users, done) {
-  done(null, users.id);
-});
-passport.deserializeUser(function(id, done) {
-  models.users.findById(id, function(data,err) {
-    var user = data[0];
-    console.log(user);
-    done(err, user);
-  });
-});
 
 
 
@@ -139,13 +153,13 @@ app.get('/', function(req, res){
 });
 //passport login
 app.post('/', passport.authenticate('local', {
-  // successRedirect: '/index',
-  failureRedirect: '/fail',
+  successRedirect: '/index',
+  failureRedirect: '/',
   failureFlash: true
   }),
   function(req, res) {
-    req.flash('success_msg','You are now logged in!')
-    res.redirect('/index');
+    // req.flash('success_msg','You are now logged in!')
+    // res.redirect('/register');
   }
 );
 //success login
@@ -269,6 +283,7 @@ function Delete(){
 
 app.get('/index', ensureAuthenticated, function(req, res){
   //get_home_posts().then(function(all_posts){
+  console.log('render index.ejs');
     res.render('index',{
       blogposts: all_posts,
       title:"Home"
