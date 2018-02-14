@@ -143,8 +143,6 @@ passport.use('local',new LocalStrategy(
    });
 }));
 
-
-
 //LOGIN
 app.get('/', function(req, res){
   res.render('login',{
@@ -282,13 +280,17 @@ function Delete(){
 };
 
 app.get('/index', ensureAuthenticated, function(req, res){
-  //get_home_posts().then(function(all_posts){
-  console.log('render index.ejs');
-    res.render('index',{
-      blogposts: all_posts,
-      title:"Home"
-    });
-  //});
+  models.posts.findAll().then(function(data){
+        res.render('index', {
+          title:"Home",
+          posts: data});
+      });
+    // res.render('index',{
+    //   blogposts: all_posts,
+    //   title:"Home",
+    //   user: req.user,
+    //   result: data
+    // });
 });
 
 app.get('/upload', ensureAuthenticated, function(req, res){
@@ -352,9 +354,9 @@ app.get('/explore', ensureAuthenticated, function(req, res){
   });
 });
 
-app.get('/users/:user',ensureAuthenticated, function(req, res) {
-  Images.findById(req.user.id, function(data){
-    res.render('user', {result: data});
+app.get('/profile/:user',ensureAuthenticated, function(req, res) {
+  models.posts.findById(req.user.id, function(data){
+    res.render('profile', {post: data});
   });
 });
 
