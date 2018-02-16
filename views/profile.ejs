@@ -3,7 +3,7 @@
 <div class='profiletop'>
   <div class='pull-left profileinfo'>
     <div class='profileimage'>
-      <img src='' onerror="this.src='../public/images/profile.png'">
+      <img src='' onerror="this.src='../images/profile.png'">
     </div>
     <div>
       <div>
@@ -12,20 +12,15 @@
       <button class="btn btn-primary-outline">Edit Profile</button>
     </div>
   </div>
-  <div class='pull-right'>
+ <div class='pull-right'>
     <div class='profilenumbers'>
       <div>
-        <span>#</span>
-        </br>
-        <span>Posts</span>
-      </div>
-      <div>
-        <span>#</span>
+        <span><%= user.followers %></span>
         </br>
         <span>Followers</span>
       </div>
       <div>
-        <span>#</span>
+        <span><%= user.following %></span>
         </br>
         <span>Following</span>
       </div>

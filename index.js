@@ -24,7 +24,8 @@ var query = require('./query');
 
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/public'));
+console.log('Public: ' + __dirname + '\\public');
+app.use(express.static(__dirname + '\\public'));
 // app.use('/public',express.static(__dirname + '/public'));
 
 // multer setup
@@ -99,8 +100,10 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
     models.users.findById(id).then(function(user) {
+      console.log('deserialize');
         done(null, user);
-    });
+    })
+    .catch(err => done(err));
 });
 
 passport.use('local',new LocalStrategy(
@@ -136,6 +139,7 @@ passport.use('local',new LocalStrategy(
      			return done(null, false, {message: 'Invalid password'});
    		}
    	});
+    //done(null, user);
    })
    .catch(err => {
       console.error(err);
@@ -286,12 +290,6 @@ app.get('/index', ensureAuthenticated, function(req, res){
           posts: data,
           user: req.user});
       });
-    // res.render('index',{
-    //   blogposts: all_posts,
-    //   title:"Home",
-    //   user: req.user,
-    //   result: data
-    // });
 });
 
 app.get('/upload', ensureAuthenticated, function(req, res){
@@ -343,19 +341,20 @@ app.get('/explore', ensureAuthenticated, function(req, res){
       title:"Explore"
     });
   });
-  edit().then(function(){
-    res.render('explore',{
-      blogposts: this_post
-    });
-  });
-  Delete().then(function(){
-    res.render('explore',{
-      blogposts: all_posts,
-    });
-  });
+  // edit().then(function(){
+  //   res.render('explore',{
+  //     blogposts: this_post
+  //   });
+  // });
+  // Delete().then(function(){
+  //   res.render('explore',{
+  //     blogposts: all_posts,
+  //   });
+  // });
 });
 
-app.get('/profile/',ensureAuthenticated, function(req, res) {
+app.get('/profile',ensureAuthenticated, function(req, res) {
+  console.log(req.user.dataValues);
   res.render('profile',{
        title: 'Hello',
        user: req.user.dataValues
