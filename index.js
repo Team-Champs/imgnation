@@ -283,7 +283,8 @@ app.get('/index', ensureAuthenticated, function(req, res){
   models.posts.findAll().then(function(data){
         res.render('index', {
           title:"Home",
-          posts: data});
+          posts: data,
+          user: req.user});
       });
     // res.render('index',{
     //   blogposts: all_posts,
@@ -354,10 +355,11 @@ app.get('/explore', ensureAuthenticated, function(req, res){
   });
 });
 
-app.get('/profile/:user',ensureAuthenticated, function(req, res) {
-  models.posts.findById(req.user.id, function(data){
-    res.render('profile', {post: data});
-  });
+app.get('/profile/',ensureAuthenticated, function(req, res) {
+  res.render('profile',{
+       title: 'Hello',
+       user: req.user.dataValues
+     });
 });
 
 // app.get('/profile', function(req, res){
