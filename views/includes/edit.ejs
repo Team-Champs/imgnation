@@ -8,14 +8,14 @@
         <h4 class="modal-title">Edit</h4>
       </div>
       <div class="modal-body">
-
         <label>Description</label>
-        <textarea type="text" class="form-control descriptionarea" name="description" maxlength="150"><%= blogposts.description %></textarea>
+        <textarea type="text" class="form-control descriptionarea" name="description" maxlength="150">
+          <%= blogposts.description %>
+        </textarea>
         <br/>
         <label>Tags</label>
         <input type="text" class="form-control" name="tags" value="<%= blogposts.tags %>"/>
         <br/>
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary-outline" data-dismiss="modal">Cancel</button>

@@ -100,7 +100,6 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
     models.users.findById(id).then(function(user) {
-      console.log('deserialize');
         done(null, user);
     })
     .catch(err => done(err));
@@ -260,36 +259,70 @@ function get_all_posts(){
 
 var this_post = [];
 
+// function edit(){
+//   return new Promise(function(req, res){
+//     models.Posts.findById(id).then(function(data,err){
+//        console.log(result.rows);
+//        resolve(result.rows);
+//        res.render({
+//          result:data,
+//          user: req.user,
+//          id:req.params.id
+//        })
+//     })
+//     // query('update posts set (img_link, description, tags) values ($1, $2, $3) where Id = ($4)', [req.body.imgLink, req.body.description, req.body.tags, req.body.id], function(err, result) {
+//     //   if(err){
+//     //     reject(err);
+//     //   }
+//     //    console.log(result.rows);
+//     //   resolve(result.rows);
+//     // });
+//   });
+// };
 function edit(){
-  return new Promise(function(resolve, reject){
-    query('update posts set (img_link, description, tags) values ($1, $2, $3) where Id = ($4)', [req.query.imgLink, req.query.description, req.query.tags, req.query.id], function(err, result) {
-      if(err){
-        reject(err);
-      }
-      // console.log(result.rows);
-      resolve(result.rows);
+  return new Promise(function(req, res){
+    models.posts.findById(req.body.id).then(function(row){
+      if (row.dataValues.id == req.session.user.id){
+        models.posts.update({
+          description: req.body.description,
+          tags: req.body.tags
+        },
+        {
+          where: {id:req.body.id}
+        }).then(function(){
+          res.json({
+            description: req.body.description,
+            tags: req.body.tags
+          })
+        });
+      };
     });
   });
 };
+
 function Delete(){
-  return new Promise(function(resolve, reject){
-    query('DELETE FROM posts WHERE Id = $1', [req.query.id], function(err, result) {
-      if(err){
-        reject(err);
-      }
-      // console.log(result.rows);
-      resolve(result.rows);
-    });
+  return new Promise(function(req, res){
+    models.images.findById(req.body.id).then(function(row){
+  		if (row.dataValues.id == req.session.user.id){
+  		 	models.posts.destroy({
+  		    	where: {
+  		    		id: req.body.id
+  		    	}
+  		    }).then(function(){
+  		 		     res.send("deleted");
+  			});
+  		}
+  });
   });
 };
 
 app.get('/index', ensureAuthenticated, function(req, res){
   models.posts.findAll().then(function(data){
-        res.render('index', {
-          title:"Home",
-          posts: data,
-          user: req.user});
-      });
+    res.render('index', {
+      title:"Home",
+      posts: data,
+      user: req.user});
+  });
 });
 
 app.get('/upload', ensureAuthenticated, function(req, res){
@@ -298,67 +331,69 @@ app.get('/upload', ensureAuthenticated, function(req, res){
   });
 });
 
-app.get('/add-post', ensureAuthenticated, function(req, res){
-  query('select body from tags where body=$1', [req.query.body], function(err, res){
-    var tagsarray=[];
-    if(res.length  > 0){
-      res.send({message:"exist"});
-      return tags[i].id;
-    }
-    else{
-      query('insert into tags (body) values($1)', [req.query.body], function(err, result){
-        if(err){
-          console.log(err);
-          // return done (client);
-          return;
-        }
-        console.log('tag inserted.');
-        return tags[i].id;
-      });
-    }
-    for (var i = 0; i < tags.length; i++){
-      console.log(tags[i].id, tags[i].body);
-      tagsarray.push({id: tags[i].id});
-    }
-  })
+app.post('/add-post',function (req, res, next) {
+  console.log(req.body);
+  req.checkBody('imgLink', 'Image is required').notEmpty();
+  req.checkBody('description', 'Image description is required').notEmpty();
+  req.checkBody('tags', 'Tags is required').notEmpty();
+  req.checkBody('description', 'A description that is not over 150 characters is required').isLength({ max: 150 });
+  var errors = req.validationErrors();
+  console.log(errors);
 
-  // query('insert into posts (img_link, description, tags) values ($1, $2, $3)', [req.query.imgLink, req.query.description, req.query.tags], function(err, result) {
-  //   if(err){
-  //     console.log(err);
-  //     // return done (client);
-  //     return;
-  //   }
-  //   console.log('Blog posted.');
-  // });
-  // return res.redirect('/');
+  if(errors){
+    req.flash('error_msg','A description is required, and it must not be over 150 characters')
+    res.redirect('upload');
+    return;
+  }
+
+  if (!req.body.imgLink) {
+    req.flash('error_msg','File required')
+    res.redirect('upload');
+    return;
+  } else {
+    console.log('imgLink:' + req.body.imgLink,
+    'description:' + req.body.description,
+    'tags:' + req.body.tags,
+    'owner:' + req.user.id);
+    var tagsArr = req.body.tags.split(',').map(function(item) {
+       return item.trim();
+     });
+    models.posts.create({
+      img_link: req.body.imgLink,
+      description: req.body.description,
+      tags: req.body.tags
+    }).then(function(){
+      res.redirect('/index');
+    });
+  };
 });
-
 
 app.get('/explore', ensureAuthenticated, function(req, res){
   get_all_posts().then(function(all_posts){
     res.render('explore',{
       blogposts: all_posts,
-      title:"Explore"
+      title:"Explore",
+      user: req.user.dataValues
     });
   });
-  // edit().then(function(){
-  //   res.render('explore',{
-  //     blogposts: this_post
-  //   });
-  // });
-  // Delete().then(function(){
-  //   res.render('explore',{
-  //     blogposts: all_posts,
-  //   });
-  // });
+  edit().then(function(){
+    res.render('explore',{
+      blogposts: all_posts
+    });
+  });
+  Delete().then(function(){
+    res.render('explore',{
+      blogposts: all_posts,
+    });
+  });
 });
 
 app.get('/profile',ensureAuthenticated, function(req, res) {
   console.log(req.user.dataValues);
   res.render('profile',{
-       title: 'Hello',
-       user: req.user.dataValues
-     });
+     title: 'Hello',
+     user: req.user.dataValues
+   });
 });
 
 // app.get('/profile', function(req, res){

@@ -7,11 +7,10 @@
     <div class='userinfo'>
       <div class='pull-left personheader'>
         <div class='profileimage'>
-          <img src='' onerror="this.src='../public/images/profile.png'">
+          <img src='' onerror="this.src='../images/profile.png'">
         </div>
         <div class='username'>
-          // <%= blogposts[i].firstName %>
-          // <%= blogposts[i].lastName %>
+          <%= user.email %>
         </div>
       </div>
       <div class='pull-right changeicons'>
@@ -29,14 +28,14 @@
       <%= blogposts[i].tags %>
     </p>
     <hr/>
-    // <div class='commentholder'>
-    //   <%= blogposts[i].body %>
-    // </div>
+    /* <div class='commentholder'>
+       <%= blogposts[i].body %>
+     </div>*/
     // <input type="text" class="form-control commentarea" maxlength="150" placeholder="Comment" />
   </div>
 <% } %>
 
-<% /*include ./includes/edit.ejs*/ %>
-<% /*include ./includes/delete.ejs*/ %>
+<% include ./includes/edit.ejs %>
+<% include ./includes/delete.ejs %>
 
 <% include ./includes/footer.ejs %>

@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       tags: {
-        type: Sequelize.ARRAY(Sequelize.INTEGER)
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
