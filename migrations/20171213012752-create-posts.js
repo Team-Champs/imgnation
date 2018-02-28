@@ -15,6 +15,14 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
+      userId:{
+        allowNull: false,
+        references:{
+          model:'users',
+          key:'id'
+        },
+        type: Sequelize.INTEGER
+      },
       tags: {
         type: Sequelize.STRING
       },

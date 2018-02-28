@@ -279,42 +279,48 @@ var this_post = [];
 //     // });
 //   });
 // };
-function edit(){
-  return new Promise(function(req, res){
-    models.posts.findById(req.body.id).then(function(row){
-      if (row.dataValues.id == req.session.user.id){
-        models.posts.update({
-          description: req.body.description,
-          tags: req.body.tags
-        },
-        {
-          where: {id:req.body.id}
-        }).then(function(){
-          res.json({
-            description: req.body.description,
-            tags: req.body.tags
-          })
-        });
-      };
-    });
+app.post( '/edit', ensureAuthenticated, function (req, res, next) {
+  //console.log(req.body);
+  models.posts.findById(req.body.id).then(function(row){
+    console.log(row);
+    // console.log(row.user.id)
+    //console.log(posts.userId)
+    // console.log(row.user.dataValues)
+    // console.log(row.user.dataValues.id)
+    // if (row.dataValues.id == req.session.user.id){
+    //   models.posts.update({
+    //     description: req.body.description,
+    //     tags: req.body.tags
+    //   },
+    //   {
+    //     where: {id:req.body.id}
+    //   }).then(function(){
+    //     res.json({
+    //       description: req.body.description,
+    //       tags: req.body.tags
+    //     })
+    //   });
+    // };
   });
-};
+});
 
-function Delete(){
-  return new Promise(function(req, res){
-    models.images.findById(req.body.id).then(function(row){
-  		if (row.dataValues.id == req.session.user.id){
-  		 	models.posts.destroy({
-  		    	where: {
-  		    		id: req.body.id
-  		    	}
-  		    }).then(function(){
-  		 		     res.send("deleted");
-  			});
-  		}
+app.post('/delete', ensureAuthenticated, function (req, res, next){
+  console.log('ho');
+  models.posts.findById(req.body.id).then(function(row){
+    console.log(row.user.id)
+    console.log(row.user.dataValues)
+    console.log(row.user.dataValues.id)
+    // if (row.user.id == req.session.user.id){
+    //   models.posts.destroy({
+    //       where: {
+    //         id: req.body.id
+    //       }
+    //     }).then(function(){
+    //          res.send("deleted");
+    //      });
+    //    }
   });
-  });
-};
+});
 
 app.get('/index', ensureAuthenticated, function(req, res){
   models.posts.findAll().then(function(data){
@@ -361,7 +367,8 @@ app.post('/add-post',function (req, res, next) {
     models.posts.create({
       img_link: req.body.imgLink,
       description: req.body.description,
-      tags: req.body.tags
+      tags: req.body.tags,
+      userId: req.user.id
     }).then(function(){
       res.redirect('/index');
     });
@@ -370,22 +377,24 @@ app.post('/add-post',function (req, res, next) {
 
 app.get('/explore', ensureAuthenticated, function(req, res){
   get_all_posts().then(function(all_posts){
+    //console.log(req.user.dataValues);
+    //console.log(all_posts.userId);
     res.render('explore',{
       blogposts: all_posts,
       title:"Explore",
       user: req.user.dataValues
     });
   });
-  edit().then(function(){
-    res.render('explore',{
-      blogposts: all_posts
-    });
-  });
-  Delete().then(function(){
-    res.render('explore',{
-      blogposts: all_posts,
-    });
-  });
+  // edit().then(function(){
+  //   res.render('explore',{
+  //     blogposts: all_posts
+  //   });
+  // });
+  // Delete().then(function(){
+  //   res.render('explore',{
+  //     blogposts: all_posts,
+  //   });
+  // });
 });
 
 app.get('/profile',ensureAuthenticated, function(req, res) {

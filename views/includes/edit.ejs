@@ -1,6 +1,6 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="editModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <form class="modal-content" action="/edit" method="POST" enctype="application/x-www-form-urlencoded">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -9,18 +9,17 @@
       </div>
       <div class="modal-body">
         <label>Description</label>
-        <textarea type="text" class="form-control descriptionarea" name="description" maxlength="150">
-          <%= blogposts.description %>
-        </textarea>
+        <textarea type="text" class="form-control descriptionarea" name="description" maxlength="150"></textarea>
         <br/>
         <label>Tags</label>
-        <input type="text" class="form-control" name="tags" value="<%= blogposts.tags %>"/>
+        <input type="text" class="form-control taginput" name="tags" value=""/>
         <br/>
       </div>
+      <input id="userId" name="userId" type="hidden" value="">
       <div class="modal-footer">
         <button type="button" class="btn btn-primary-outline" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Update</button>
+        <button type="submit" class="btn btn-primary">Update</button>
       </div>
-    </div>
+    </form>
   </div>
 </div>
