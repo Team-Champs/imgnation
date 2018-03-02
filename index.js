@@ -234,8 +234,10 @@ function get_all_posts(){
 }
 
 // function get_home_posts(){
+//   console.log(models.users.id);
+//
 //   return new Promise(function(resolve, reject){
-//     query('select * from posts order by id desc', [], function(err, result) {
+//     query('select from posts where userId  === models.users.id', [], function(err, result) {
 //       if(err){
 //         reject(err);
 //       }
@@ -259,26 +261,6 @@ function get_all_posts(){
 
 var this_post = [];
 
-// function edit(){
-//   return new Promise(function(req, res){
-//     models.Posts.findById(id).then(function(data,err){
-//        console.log(result.rows);
-//        resolve(result.rows);
-//        res.render({
-//          result:data,
-//          user: req.user,
-//          id:req.params.id
-//        })
-//     })
-//     // query('update posts set (img_link, description, tags) values ($1, $2, $3) where Id = ($4)', [req.body.imgLink, req.body.description, req.body.tags, req.body.id], function(err, result) {
-//     //   if(err){
-//     //     reject(err);
-//     //   }
-//     //    console.log(result.rows);
-//     //   resolve(result.rows);
-//     // });
-//   });
-// };
 app.post( '/edit', ensureAuthenticated, function (req, res, next) {
   //console.log(req.body);
   models.posts.findById(req.body.id).then(function(row){
@@ -305,9 +287,6 @@ app.post( '/edit', ensureAuthenticated, function (req, res, next) {
       });
   }).then(() => {
     res.redirect('/explore');
-
-     // res.render('explore', {
-     //   title:"explore"});
   });
 });
 
@@ -329,17 +308,15 @@ app.post('/delete', ensureAuthenticated, function (req, res, next){
   })
   .then(() => {
     res.redirect('/index');
-     // res.render('index', {
-     //   title:"Home"});
   });
 });
 
 app.get('/index', ensureAuthenticated, function(req, res){
-  models.posts.findAll().then(function(data){
+  get_all_posts().then(function(all_posts){
     res.render('index', {
       title:"Home",
-      posts: data,
-      user: req.user});
+      blogposts: all_posts,
+      user: req.user.dataValues});
   });
 });
 
@@ -397,16 +374,6 @@ app.get('/explore', ensureAuthenticated, function(req, res){
       user: req.user.dataValues
     });
   });
-  // edit().then(function(){
-  //   res.render('explore',{
-  //     blogposts: all_posts
-  //   });
-  // });
-  // Delete().then(function(){
-  //   res.render('explore',{
-  //     blogposts: all_posts,
-  //   });
-  // });
 });
 
 app.get('/profile',ensureAuthenticated, function(req, res) {

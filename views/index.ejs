@@ -1,9 +1,24 @@
 <% include ./includes/header.ejs %>
 
-<h3>home</h3>
-
-<% /*for(var i = 0; i < blogposts.length; i++){ %>
-  <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+<% for(var i = 0; i < blogposts.length; i++){ %>
+  <%if (blogposts[i].userId === user.id) { %>
+  <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12 blogpost' id='<%= blogposts[i].id %>'>
+    <div class='userinfo'>
+      <div class='pull-left personheader'>
+        <div class='profileimage'>
+          <img src='' onerror="this.src='../images/profile.png'">
+        </div>
+        <div class='username'>
+          <%= user.email %>
+        </div>
+      </div>
+      <%if (blogposts[i].userId === user.id) { %>
+        <div class='pull-right changeicons'>
+          <i class="edmodel fa fa-pencil" aria-hidden="true" data-toggle="modal" data-target="#editModal"></i>
+          <i class="delmodel fa fa-trash-o" aria-hidden="true" data-toggle="modal" data-target="#deleteModal"></i>
+        </div>
+      <% } %>
+    </div>
     <div class="image">
       <img src='<%= blogposts[i].img_link %>'/>
     </div>
@@ -14,9 +29,10 @@
       <%= blogposts[i].tags %>
     </p>
   </div>
-<% }*/ %>
+  <% } %>
+<% } %>
 
-<% /*include ./includes/edit.ejs*/ %>
-<% /*include ./includes/delete.ejs*/ %>
+<% include ./includes/edit.ejs %>
+<% include ./includes/delete.ejs %>
 
 <% include ./includes/footer.ejs %>
