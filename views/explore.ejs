@@ -15,8 +15,8 @@
       </div>
       <%if (blogposts[i].userId === user.id) { %>
         <div class='pull-right changeicons'>
-          <i class="fa fa-pencil" aria-hidden="true" data-toggle="modal" data-target="#editModal" id="edmodel"></i>
-          <i class="fa fa-trash-o" aria-hidden="true" data-toggle="modal" data-target="#deleteModal" id="delmodel"></i>
+          <i class="edmodel fa fa-pencil" aria-hidden="true" data-toggle="modal" data-target="#editModal"></i>
+          <i class="delmodel fa fa-trash-o" aria-hidden="true" data-toggle="modal" data-target="#deleteModal"></i>
         </div>
       <% } %>
     </div>

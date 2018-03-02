@@ -14,16 +14,10 @@ function readURL(input) {
    }
 }
 
-$('#delmodel').on('show.bs.modal', function(e) {
-    var itemId = $(e.relatedTarget).data('data-id');
-    $(e.currentTarget).find('#deleteModal').val(itemId);
-});
-$('#edmodel').on('show.bs.modal', function(e) {
-    var itemId = $(e.relatedTarget).data('data-id');
-    $(e.currentTarget).find('#editModal').val(itemId);
-});
-
 $(document).on("click", ".changeicons > i", function() {
+  // console.log($(this).parent().parent().parent().attr('id'));
+  $('#delete-id').val($(this).parent().parent().parent().attr('id'));
+  $('#edit-id').val($(this).parent().parent().parent().attr('id'));
     // console.log("inside");
     // console.log($('.changeicons').parent().parent().closest('div').attr('id'));
     // console.log($('.changeicons').parent().parent().find('.description').text());

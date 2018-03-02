@@ -282,43 +282,55 @@ var this_post = [];
 app.post( '/edit', ensureAuthenticated, function (req, res, next) {
   //console.log(req.body);
   models.posts.findById(req.body.id).then(function(row){
-    console.log(row);
-    // console.log(row.user.id)
-    //console.log(posts.userId)
-    // console.log(row.user.dataValues)
-    // console.log(row.user.dataValues.id)
-    // if (row.dataValues.id == req.session.user.id){
-    //   models.posts.update({
-    //     description: req.body.description,
-    //     tags: req.body.tags
-    //   },
-    //   {
-    //     where: {id:req.body.id}
-    //   }).then(function(){
-    //     res.json({
-    //       description: req.body.description,
-    //       tags: req.body.tags
-    //     })
-    //   });
-    // };
+      // models.posts.update({
+      //   description: req.body.description,
+      //   tags: req.body.tags
+      // },
+      // {
+      //   where: {id:req.body.id}
+      // }).then(function(){
+      //   res.json({
+      //     description: req.body.description,
+      //     tags: req.body.tags
+      //   });
+      //   // res.render('explore',{
+      //   //   blogposts: all_posts,
+      //   //   title:"Explore",
+      //   // });
+      // });
+      console.log(row);
+      row.update({
+        description: req.body.description,
+            tags: req.body.tags
+      });
+  }).then(() => {
+    res.redirect('/explore');
+
+     // res.render('explore', {
+     //   title:"explore"});
   });
 });
 
 app.post('/delete', ensureAuthenticated, function (req, res, next){
-  console.log('ho');
+  console.log(req.body);
   models.posts.findById(req.body.id).then(function(row){
-    console.log(row.user.id)
-    console.log(row.user.dataValues)
-    console.log(row.user.dataValues.id)
-    // if (row.user.id == req.session.user.id){
-    //   models.posts.destroy({
-    //       where: {
-    //         id: req.body.id
-    //       }
-    //     }).then(function(){
-    //          res.send("deleted");
-    //      });
-    //    }
+      // models.posts.destroy({
+      //     where: {
+      //       id: req.body.id
+      //     }
+      //   }).then(function(result){
+      //        //res.send("deleted");
+      //        console.log(result);
+      //        res.render('index', {
+      //          title:"Home"});
+      //    });
+      console.log(row);
+      row.destroy();
+  })
+  .then(() => {
+    res.redirect('/index');
+     // res.render('index', {
+     //   title:"Home"});
   });
 });
 
