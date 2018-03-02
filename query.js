@@ -6,7 +6,7 @@ var connectionString;
 if(process.env.DATABASE_URL){
   connectionString = process.env.DATABASE_URL
 } else {
-  connectionString = 'postgres://' + 
+  connectionString = 'postgres://' +
   process.env.POSTGRES_USER +':'+
   process.env.POSTGRES_PASSWORD+'@localhost/imgnation';
 }
@@ -34,6 +34,7 @@ module.exports = function(queryString, queryParameters, onComplete) {
    }
    client.query(queryString, queryParameters, function(err, result, pool) {
      if (err) {
+       console.log(queryString);
        done(client);
        console.log(`error: query failed: "${queryString}", "${queryParameters}", ${err}`);
      }
@@ -47,4 +48,3 @@ module.exports = function(queryString, queryParameters, onComplete) {
    });
  });
 };
-

@@ -1,7 +1,8 @@
 <% include ./includes/header.ejs %>
 
+<%# <h3>explore</h3> %>
+
 <% for(var i = 0; i < blogposts.length; i++){ %>
-  <%if (blogposts[i].userId === user.id) { %>
   <div class='col-lg-6 col-md-6 col-sm-6 col-xs-12 blogpost' id='<%= blogposts[i].id %>'>
     <div class='userinfo'>
       <div class='pull-left personheader'>
@@ -29,7 +30,6 @@
       <%= blogposts[i].tags %>
     </p>
   </div>
-  <% } %>
 <% } %>
 
 <% include ./includes/edit.ejs %>

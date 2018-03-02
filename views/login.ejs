@@ -1,0 +1,22 @@
+<% include ./includes/notlogin.ejs %>
+
+<div class="loginspace">
+  <div>
+    <img class="logo" src="../images/ImgNation.svg"/>
+    <br/>
+    <form method="post" action="/">
+      <input class="form-control" type="email" placeholder='Email' name="email"/>
+      <br/>
+      <input class="form-control" type="password" placeholder='Password' name="password" />
+      <br/>
+      <button class='btn btn-login' type="submit">
+        Log In
+      </button>
+    </form>
+  </div>
+  <button class='btn btn-foot foot' onclick="location.href='/register'">
+    Don't have a login? Sign up here.
+  </button>
+</div>
+
+<% include ./includes/footer.ejs %>
