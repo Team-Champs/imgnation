@@ -16,7 +16,7 @@
     "dialect": "postgres"
   },
   "production": {
-    "use_env_variable": "postgresql-deep-31280",
+    "database": "postgresql-deep-31280",
     "dialect": "postgres"
   }
 }
