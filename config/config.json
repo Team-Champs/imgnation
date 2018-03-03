@@ -16,7 +16,7 @@
     "dialect": "postgres"
   },
   "production": {
-    "use_env_variable": "POSTGRES_DB_URL",
+    "use_env_variable": "postgres://tkkmjleoowwfbs:e660026cc9177e1cb9ca945092afb94ed5ee2cddc1351a8467e28583f72c99b0@ec2-54-221-207-184.compute-1.amazonaws.com:5432/d3f8ggfci0icm2",
     "username": "process.env.PGUSER || 'postgres'",
     "password": null,
     "database": "postgresql-deep-31280",
