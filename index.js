@@ -24,9 +24,10 @@ var query = require('./query');
 
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
-console.log('Public: ' + __dirname + '\\public');
-app.use(express.static(__dirname + '\\public'));
-// app.use('/public',express.static(__dirname + '/public'));
+
+// app.use(express.static(__dirname + '\\public'));
+app.use(express.static(__dirname + '/public'));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // multer setup
 var storage = multer.diskStorage({
