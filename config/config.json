@@ -8,14 +8,17 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "root",
-    "password": "root",
+    "username": "postgres",
+    "password": "1234",
     "database": "imgnation",
     "host": "127.0.0.1",
     "port": "5432",
     "dialect": "postgres"
   },
   "production": {
+    "use_env_variable": "POSTGRES_DB_URL",
+    "username": "process.env.PGUSER || 'postgres'",
+    "password": null,
     "database": "postgresql-deep-31280",
     "dialect": "postgres"
   }
